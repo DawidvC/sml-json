@@ -1,0 +1,7 @@
+library (0.1.0)
+  structure Encoding
+is
+  $/basis.cm
+
+  src/encoding.sig
+  src/encoding.sml
