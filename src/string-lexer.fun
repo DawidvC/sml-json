@@ -1,30 +1,20 @@
 signature STRING_LEXER_ARG =
   sig
-    structure Char : CHAR
-    structure String : STRING where type char = Char.char
     structure Charset : CHARSET
+    type string
+    val asString : Word8Vector.vector -> string
   end
 
 functor StringLexer(A : STRING_LEXER_ARG) : PARALEXER =
   struct
-    structure Char = A.Char
-    structure String = A.String
-    structure Charset = A.Charset
     structure W8V = Word8Vector
 
-    type repr = String.string
+    type repr = A.string
 
     fun encode codePoint =
-      case Charset.encode (Reader.const codePoint) () of
+      case A.Charset.encode (Reader.const codePoint) () of
         NONE => raise Fail "BUG: invalid Unicode code point."
       | SOME (vector, _) => vector
-
-    fun asString vector =
-      let
-        fun asChar (word, result) = (Char.chr (Word8.toInt word)) :: result
-      in
-        String.implode (W8V.foldr asChar [] vector)
-      end
 
     fun lex decode stream =
       let
@@ -78,8 +68,8 @@ functor StringLexer(A : STRING_LEXER_ARG) : PARALEXER =
 
         and inside stream result =
           case decode stream of
-            NONE => SOME (asString result, stream)
-          | SOME (0wx22, stream) => SOME (asString result, stream)
+            NONE => SOME (A.asString result, stream)
+          | SOME (0wx22, stream) => SOME (A.asString result, stream)
           | SOME (0wx5C, stream) => escape stream result
           | SOME (point, stream) =>
               if point = 0wx20
