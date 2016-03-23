@@ -1,6 +1,8 @@
-functor Lexer(LexerArg : LEXER_ARG) :> LEXER =
+functor Lexer(A : LEXER_ARG) :> LEXER
+  where type NumberLexer.repr = A.NumberLexer.repr
+    and type StringLexer.repr = A.StringLexer.repr =
   struct
-    open LexerArg
+    open A
     open Token
 
     exception UnknownEncoding
