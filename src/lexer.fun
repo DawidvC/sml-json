@@ -42,8 +42,10 @@ functor Lexer(A : LEXER_ARG) :> LEXER
 
         fun true stream =
           constant [0wx72, 0wx75, 0wx65] TRUE stream
+
+        val trimmed = skipWS stream
       in
-        case decode (skipWS stream) of
+        case decode trimmed of
           NONE => NONE
         | SOME (0wx5B, stream) => SOME (LSQUARE, stream)
         | SOME (0wx7B, stream) => SOME (LCURLY, stream)
@@ -54,7 +56,7 @@ functor Lexer(A : LEXER_ARG) :> LEXER
         | SOME (0wx66, stream) => false stream
         | SOME (0wx6E, stream) => null stream
         | SOME (0wx74, stream) => true stream
-        | SOME (0wx22, _) => Reader.map STRING (StringLexer.lex decode) stream
-        | SOME (point, _) => Reader.map NUMBER (NumberLexer.lex decode) stream
+        | SOME (0wx22, _) => Reader.map STRING (StringLexer.lex decode) trimmed
+        | SOME (point, _) => Reader.map NUMBER (NumberLexer.lex decode) trimmed
       end
   end
