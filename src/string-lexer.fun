@@ -1,4 +1,4 @@
-functor StringLexer(String : STRING) : AUX_LEXER =
+functor StringLexer(String : STRING) : PARALEXER =
   struct
     type repr = String.string
 

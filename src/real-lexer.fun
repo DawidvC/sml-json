@@ -1,4 +1,4 @@
-functor RealLexer(Real : REAL) : AUX_LEXER =
+functor RealLexer(Real : REAL) : PARALEXER =
   struct
     type repr = Real.real
 

@@ -1,6 +1,6 @@
 library (0.1.0)
-  signature AUX_LEXER
   signature LEXER
+  signature PARALEXER
 
   structure Encoding
   structure Lexer

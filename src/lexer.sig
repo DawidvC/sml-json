@@ -1,4 +1,4 @@
-signature AUX_LEXER =
+signature PARALEXER =
   sig
     type repr
     val lex : (word, 's) Reader.t -> (repr, 's) Reader.t
@@ -6,8 +6,8 @@ signature AUX_LEXER =
 
 signature LEXER_ARG =
   sig
-    structure NumberLexer : AUX_LEXER
-    structure StringLexer : AUX_LEXER
+    structure NumberLexer : PARALEXER
+    structure StringLexer : PARALEXER
   end
 
 signature LEXER =
