@@ -5,8 +5,6 @@ functor Lexer(A : LEXER_ARG) :> LEXER
     open A
     open Token
 
-    exception UnknownEncoding
-
     fun lex encoding reader stream =
       let
         val decode =
@@ -16,14 +14,6 @@ functor Lexer(A : LEXER_ARG) :> LEXER
           | Encoding.UTF16LE => UTF16LE.decode reader
           | Encoding.UTF32BE => UTF32BE.decode reader
           | Encoding.UTF32LE => UTF32LE.decode reader
-          | Encoding.UNKNOWN =>
-            case Encoding.guess reader stream of
-              Encoding.UTF8 => UTF8.decode reader
-            | Encoding.UTF16BE => UTF16BE.decode reader
-            | Encoding.UTF16LE => UTF16LE.decode reader
-            | Encoding.UTF32BE => UTF32BE.decode reader
-            | Encoding.UTF32LE => UTF32LE.decode reader
-            | Encoding.UNKNOWN => raise UnknownEncoding
 
         fun skipWS stream =
           case decode stream of
