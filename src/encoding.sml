@@ -1,6 +1,6 @@
 structure Encoding :> ENCODING =
   struct
-    open Encoding
+    datatype t = datatype Encoding.t
 
     (**
      * The original JSON specification, RFC 4627, presents a method of finding
@@ -32,38 +32,14 @@ structure Encoding :> ENCODING =
      *)
     fun guess (reader : (Word8.word, 's) StringCvt.reader) stream =
       let
-        fun maybeUTF32BE stream =
-          case reader stream of
-            NONE => NONE
-          | SOME (0wx00, stream) => SOME UTF32BE
-          | SOME (octet, stream) => NONE
-
-        fun maybeUTF16BE stream =
-          case reader stream of
-            NONE => NONE
-          | SOME (0wx00, stream) => maybeUTF32BE stream
-          | SOME (octet, stream) => SOME UTF16BE
-
-        fun maybeUTF32LE stream =
-          case reader stream of
-            SOME (0w0, stream) => SOME UTF32LE
-          | _ => NONE
-
-        fun maybeUTF16LE stream =
-          case reader stream of
-            SOME (0wx00, stream) => maybeUTF32LE stream
-          | _ => SOME UTF16LE
-
-        fun maybeUTF8 stream =
-          case reader stream of
-            SOME (0wx00, stream) => maybeUTF16LE stream
-          | _ => SOME UTF8
-
         fun fromPattern stream =
-          case reader stream of
+          case Reader.grouped 4 reader stream of
             NONE => NONE
-          | SOME (0wx00, stream) => maybeUTF16BE stream
-          | SOME (octet, stream) => maybeUTF8 stream
+          | SOME (0w0 :: 0w0 :: 0w0 :: _   :: _, _) => SOME UTF32BE
+          | SOME (_   :: 0w0 :: 0w0 :: 0w0 :: _, _) => SOME UTF32LE
+          | SOME (0w0 :: _   :: _, _) => SOME UTF16BE
+          | SOME (_   :: 0w0 :: _, _) => SOME UTF16LE
+          | SOME _ => SOME UTF8
       in
         case Encoding.fromBOM reader stream of
           NONE => fromPattern stream
