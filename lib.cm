@@ -1,9 +1,12 @@
 library (0.1.0)
   signature LEXER
   signature PARALEXER
+  signature PARSER
 
   structure Encoding
+  structure JSON
   structure Lexer
+  structure Parser
   structure Token
 
   functor Lexer
@@ -16,9 +19,12 @@ is
 
   src/encoding.sig
   src/encoding.sml
+  src/json.sml
   src/lexer.fun
   src/lexer.sig
   src/lexer.sml
+  src/parser.sig
+  src/parser.sml
   src/reader.sml
   src/real-lexer.fun
   src/string-lexer.fun
