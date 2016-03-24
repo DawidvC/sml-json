@@ -1,11 +1,6 @@
 structure Encoding :> ENCODING =
   struct
-    datatype t =
-      UTF8
-    | UTF16BE
-    | UTF16LE
-    | UTF32BE
-    | UTF32LE
+    open Encoding
 
     (**
      * The original JSON specification, RFC 4627, presents a method of finding
@@ -34,8 +29,6 @@ structure Encoding :> ENCODING =
      *
      * Because of this, we're relaxing the patterns for determining UTF-16
      * encoded values by looking only at the first two octets.
-     *
-     * TODO: detect BOMs.
      *)
     fun guess (reader : (Word8.word, 's) StringCvt.reader) stream =
       let
@@ -65,10 +58,15 @@ structure Encoding :> ENCODING =
           case reader stream of
             SOME (0wx00, stream) => maybeUTF16LE stream
           | _ => SOME UTF8
+
+        fun fromPattern stream =
+          case reader stream of
+            NONE => NONE
+          | SOME (0wx00, stream) => maybeUTF16BE stream
+          | SOME (octet, stream) => maybeUTF8 stream
       in
-        case reader stream of
-          NONE => NONE
-        | SOME (0wx00, stream) => maybeUTF16BE stream
-        | SOME (octet, stream) => maybeUTF8 stream
+        case Encoding.fromBOM reader stream of
+          NONE => fromPattern stream
+        | SOME (encoding, _) => SOME encoding
       end
   end
