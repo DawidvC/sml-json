@@ -1,4 +1,10 @@
-functor RealLexer(Real : REAL) : PARALEXER =
+signature REAL_LEXER_ARG =
+  sig
+    type real
+    val scan : (char, 'a) Reader.t -> (real, 'a) Reader.t
+  end
+
+functor RealLexer(Real : REAL_LEXER_ARG) : PARALEXER =
   struct
     type repr = Real.real
 
