@@ -19,7 +19,7 @@ structure Encoding :> ENCODING =
      * >        xx xx xx xx  UTF-8
      *
      * However, RFC 4627 assumed that the root value of a JSON stream is either
-     * an object or an arrat. Later on, RFC 7159 allowed any scalar value to be
+     * an object or an array. Later on, RFC 7159 allowed any scalar value to be
      * used as a JSON text, which means that a standalone JSON string is now a
      * valid JSON text. For this reason, we no longer have the guarantee that
      * the first two characters in a JSON text are always ASCII-encodable. For
