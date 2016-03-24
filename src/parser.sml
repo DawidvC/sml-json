@@ -13,7 +13,7 @@ structure Parser :> PARSER =
 
             and loop stream result =
               case token stream of
-                SOME (RSQUARE, stream) => SOME (JSON.ARRAY result, stream)
+                SOME (RSQUARE, stream) => SOME (JSON.ARRAY (rev result), stream)
               | SOME (COMMA, stream) => valueNext stream result
               | _ => NONE
           in
