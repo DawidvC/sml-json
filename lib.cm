@@ -4,10 +4,10 @@ library (0.1.0)
   signature PARSER
 
   structure Encoding
-  structure JSON
   structure Lexer
   structure Parser
   structure Token
+  structure Value
 
   functor Lexer
   functor RealLexer
@@ -19,7 +19,6 @@ is
 
   src/encoding.sig
   src/encoding.sml
-  src/json.sml
   src/lexer.fun
   src/lexer.sig
   src/lexer.sml
@@ -29,3 +28,4 @@ is
   src/real-lexer.fun
   src/string-lexer.fun
   src/token.sml
+  src/value.sml
