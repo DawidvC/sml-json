@@ -4,21 +4,23 @@ library (0.1.0)
   signature PARSER
 
   structure Encoding
+  structure JSON
   structure Lexer
   structure Parser
   structure Token
-  structure Value
 
   functor Lexer
   functor RealLexer
   functor StringLexer
 is
-  $/basis.cm
-
   $SMACKAGE/sml-charset/v0.1.1/lib.cm (version: 0.1.1)
+
+  lib/sml-foundation.cm
 
   src/encoding.sig
   src/encoding.sml
+  src/json.sig
+  src/json.sml
   src/lexer.fun
   src/lexer.sig
   src/lexer.sml
