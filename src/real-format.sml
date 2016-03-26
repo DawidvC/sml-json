@@ -2,7 +2,7 @@
  * Adapted from an original version by Emden Gansner and John Reppy located at:
  * http://www.mpi-sws.org/~joshua/stardust/current/src/nj-util/real-format.sml
  *)
-structure RealFormat : REAL_FORMAT =
+structure RealFormat =
   struct
     exception BadPrecision
 
@@ -55,7 +55,7 @@ structure RealFormat : REAL_FORMAT =
         | _ => (1 :: digits, e + 1)
       end
 
-    fun format { precision = prec } r =
+    fun formatWithPrecision { precision = prec } r =
       let
         val () = if prec < 1 then raise BadPrecision else ()
 
@@ -107,5 +107,17 @@ structure RealFormat : REAL_FORMAT =
           if r > 0.0
           then rtoa (false, decompose (r, 0, pf))
           else { sign = false, whole = "0", frac = "", exp = NONE }
+      end
+
+    fun format n =
+      let
+        val { sign, whole, frac, exp } = formatWithPrecision { precision = 15 } n
+      in
+        String.concat [
+          if sign then "-" else "",
+          whole,
+          frac,
+          Option.getOpt (Option.map Int.toString exp, "")
+        ]
       end
   end

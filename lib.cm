@@ -31,7 +31,6 @@ is
   src/parser.sig
   src/parser.sml
   src/reader.sml
-  src/real-format.sig
   src/real-format.sml
   src/real-lexer.fun
   src/string-lexer.fun
