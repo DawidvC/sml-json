@@ -1,10 +1,12 @@
 library (0.1.0)
+  signature JSON_FORMAT
   signature LEXER
   signature PARALEXER
   signature PARSER
 
   structure Encoding
   structure JSON
+  structure JSONFormat
   structure Lexer
   structure Parser
   structure Token
@@ -21,6 +23,8 @@ is
   src/encoding.sml
   src/json.sig
   src/json.sml
+  src/json-format.sig
+  src/json-format.sml
   src/lexer.fun
   src/lexer.sig
   src/lexer.sml
