@@ -13,8 +13,8 @@ structure Parser :> PARSER =
 
             and loop stream result =
               case token stream of
-                SOME (RSQUARE, stream) => SOME (Value.ARRAY (rev result), stream)
-              | SOME (COMMA, stream) => valueNext stream result
+                SOME (RSQUARE, s) => SOME (Value.ARRAY (List.rev result), s)
+              | SOME (COMMA, s) => valueNext s result
               | _ => NONE
           in
             case token stream of
@@ -42,8 +42,8 @@ structure Parser :> PARSER =
 
             and loop stream result =
               case token stream of
-                SOME (RCURLY, stream) => SOME (Value.OBJECT result, stream)
-              | SOME (COMMA, stream) => stringNext stream result
+                SOME (RCURLY, s) => SOME (Value.OBJECT (List.rev result), s)
+              | SOME (COMMA, s) => stringNext s result
               | _ => NONE
           in
             case token stream of
