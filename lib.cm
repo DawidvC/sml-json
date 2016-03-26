@@ -1,4 +1,8 @@
 library (0.1.0)
+  functor Lexer
+  functor RealLexer
+  functor StringLexer
+
   signature JSON_FORMAT
   signature LEXER
   signature PARALEXER
@@ -10,10 +14,6 @@ library (0.1.0)
   structure Lexer
   structure Parser
   structure Token
-
-  functor Lexer
-  functor RealLexer
-  functor StringLexer
 is
   $SMACKAGE/sml-charset/v0.1.1/lib.cm (version: 0.1.1)
 
