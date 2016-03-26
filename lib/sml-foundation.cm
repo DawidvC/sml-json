@@ -1,5 +1,9 @@
-group
+library
   library ($SMACKAGE/sml-foundation/v0.1.4/lib.cm) - (
+    (*
+     * This is structure re-exported from SML/NJ lib conflicts with the one
+     * defined in the sml-charset library.
+     *)
     structure UTF8
   )
 is
