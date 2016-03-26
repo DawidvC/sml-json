@@ -116,7 +116,7 @@ structure RealFormat =
         String.concat [
           if sign then "-" else "",
           whole,
-          frac,
+          if frac = "" then "" else "." ^ frac,
           Option.getOpt (Option.map Int.toString exp, "")
         ]
       end
