@@ -8,11 +8,11 @@ signature JSON_FORMAT =
 
     val format :
          {
-           numberFormat : ('n -> string),
-           stringFormat : ('s -> string),
+           numberFormat : ('num -> string),
+           stringFormat : ('str -> string),
            indentWidth : int,
            indentChar : indent_char
          }
-      -> (('n, 's) Token.t, 'inner) Reader.t
+      -> (('num, 'str) Token.t, 'inner) Reader.t
       -> (string, 'inner stream) Reader.t
   end
