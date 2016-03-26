@@ -1,7 +1,5 @@
 structure JSONFormat :> JSON_FORMAT =
   struct
-    datatype indent_char = SPACE | TAB
-
     type 'inner stream = 'inner * { level : int, isMember : bool }
 
     fun stream inner =
@@ -30,13 +28,12 @@ structure JSONFormat :> JSON_FORMAT =
         case f a (outerStream stream) of
           (b, outer) => SOME (b, (inner, outer))
 
-    fun format { numberFormat, stringFormat, indentWidth, indentChar } nextToken stream =
+    fun format { numberFormat, stringFormat, indentChars } nextToken stream =
       let
-        val indentChar = case indentChar of SPACE => " " | TAB => "\t"
-        val newLine = if indentWidth = 0 then "" else "\n"
-        val colon = if indentWidth = 0 then ":" else ": "
+        val newLine = if indentChars = "" then "" else "\n"
+        val colon = if indentChars = "" then ":" else ": "
 
-        fun repeat n = String.repeat (indentWidth * n) indentChar
+        fun repeat n = String.repeat n indentChars
 
         fun formatToken token (stream as { level, isMember }) =
           let
