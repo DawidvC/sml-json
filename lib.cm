@@ -33,6 +33,7 @@ is
   src/reader.sml
   src/real-format.sml
   src/real-lexer.fun
+  src/string-format.sml
   src/string-lexer.fun
   src/token.sml
   src/value.sml
