@@ -1,6 +1,6 @@
 functor StringLexer(Charset : CHARSET) : PARALEXER =
   struct
-    structure W8V = Word8Vector
+    structure W8Vec = Word8Vector
 
     type repr = string
 
@@ -16,7 +16,7 @@ functor StringLexer(Charset : CHARSET) : PARALEXER =
             fun add acc word = Word.orb (Word.<< (acc, 0w4), word)
             fun loop stream acc n =
               if n = 0
-              then inside stream (W8V.concat [result, encode acc])
+              then inside stream (W8Vec.concat [result, encode acc])
               else
                 case decode stream of
                   SOME (0wx30, stream) => loop stream (add acc 0wx0) (n - 1)
@@ -48,14 +48,14 @@ functor StringLexer(Charset : CHARSET) : PARALEXER =
 
         and escape stream result =
           case decode stream of
-            SOME (0wx22, stream) => inside stream (W8V.append (result, 0wx22))
-          | SOME (0wx5C, stream) => inside stream (W8V.append (result, 0wx5C))
-          | SOME (0wx2F, stream) => inside stream (W8V.append (result, 0wx2F))
-          | SOME (0wx62, stream) => inside stream (W8V.append (result, 0wx08))
-          | SOME (0wx66, stream) => inside stream (W8V.append (result, 0wx0C))
-          | SOME (0wx6E, stream) => inside stream (W8V.append (result, 0wx0A))
-          | SOME (0wx72, stream) => inside stream (W8V.append (result, 0wx0D))
-          | SOME (0wx74, stream) => inside stream (W8V.append (result, 0wx09))
+            SOME (0wx22, stream) => inside stream (W8Vec.append (result, 0wx22))
+          | SOME (0wx5C, stream) => inside stream (W8Vec.append (result, 0wx5C))
+          | SOME (0wx2F, stream) => inside stream (W8Vec.append (result, 0wx2F))
+          | SOME (0wx62, stream) => inside stream (W8Vec.append (result, 0wx08))
+          | SOME (0wx66, stream) => inside stream (W8Vec.append (result, 0wx0C))
+          | SOME (0wx6E, stream) => inside stream (W8Vec.append (result, 0wx0A))
+          | SOME (0wx72, stream) => inside stream (W8Vec.append (result, 0wx0D))
+          | SOME (0wx74, stream) => inside stream (W8Vec.append (result, 0wx09))
           | SOME (0wx75, stream) => hexdig stream result
           | _ => NONE
 
@@ -69,11 +69,11 @@ functor StringLexer(Charset : CHARSET) : PARALEXER =
                  orelse point = 0wx21
                  orelse (0wx23 <= point andalso point <= 0wx5B)
                  orelse (0wx5D <= point andalso point <= 0wx10FFFF)
-              then inside stream (W8V.concat [result, encode point])
+              then inside stream (W8Vec.concat [result, encode point])
               else NONE
       in
         case decode stream of
-          SOME (0wx22, stream) => inside stream (W8V.fromList [])
+          SOME (0wx22, stream) => inside stream (W8Vec.fromList [])
         | _ => NONE
       end
   end
