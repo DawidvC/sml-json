@@ -21,11 +21,11 @@ structure JSONFormat :> JSON_FORMAT =
     fun unsetMember { level, isMember } =
       { level = level, isMember = false }
 
-    fun composeReaders reader f stream =
-      case reader (innerStream stream) of
+    fun seqCompositeReaders readerA readerB stream =
+      case readerA (innerStream stream) of
         NONE => NONE
       | SOME (a, inner) =>
-        case f a (outerStream stream) of
+        case readerB a (outerStream stream) of
           (b, outer) => SOME (b, (inner, outer))
 
     fun format { numberFormat, stringFormat, indentChars } nextToken stream =
@@ -56,6 +56,6 @@ structure JSONFormat :> JSON_FORMAT =
             | RCURLY   => (belowDedent "}", unsetMember (decLevel stream))
           end
       in
-        composeReaders nextToken formatToken stream
+        seqCompositeReaders nextToken formatToken stream
       end
   end
