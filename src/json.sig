@@ -14,4 +14,5 @@ signature JSON =
 
     val decodeFile : String.string -> (number, string) t option
     val decodeString : String.string -> (number, string) t option
+    val encodeString : { spaces : String.string } -> (number, string) t -> String.string
   end
