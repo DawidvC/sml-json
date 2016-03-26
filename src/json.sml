@@ -1,7 +1,5 @@
 structure JSON : JSON =
   struct
-    open Fn.Syntax.|> infix |>
-
     datatype t = datatype Value.t
 
     type number = Lexer.NumberLexer.repr
